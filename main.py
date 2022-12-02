@@ -1,9 +1,8 @@
-import os
-
 MENU = {
     "espresso": {
         "ingredients": {
             "water": 50,
+            "milk": 0,
             "coffee": 18,
         },
         "cost": 1.5,
@@ -55,46 +54,36 @@ def check_res(user_input):
         return True
 
 
-
 def check_value():
     quarters = float(input("How many quarters?: "))
     dimes = float(input("How many dimes?: "))
     nickles = float(input("How many nickles?: "))
     pennies = float(input("How many pennies?: "))
     value = 0.25 * quarters + 0.1 * dimes + 0.05 * nickles + 0.01 * pennies
-    return round(value, 2)
+    return value
+
 
 loop_breaker = False
 
 while not loop_breaker:
-    user_input = input("What would you like? (espresso/latte/capuccino): ")
+    user_input = input("What would you like? (espresso/latte/cappuccino): ")
     if user_input == "off":
         print("Switching off")
         loop_breaker = True
         continue
-    if user_input == "report":
+    elif user_input == "report":
         report()
         continue
-    else:
-        if check_res(user_input):
-            print("Please insert coins")
-            change = check_value()
-            if change - MENU[user_input]['cost'] >= 0:
-                print(f"Here is {change} in change")
-                profit += MENU[user_input]["cost"]
-                resources["water"] -= MENU[user_input]["ingredients"]["water"]
-                resources["milk"] -= MENU[user_input]["ingredients"]["milk"]
-                resources["coffee"] -= MENU[user_input]["ingredients"]["coffee"]
-                print(f"Here is your {user_input} Enjoy!")
-            else:
-                print("Sorry that's not enough money. Money refunded.")
-
-
-
-
-
-
-
-
-
+    elif check_res(user_input):
+        print("Please insert coins")
+        change = round(check_value() - MENU[user_input]['cost'], 2)
+        if change >= 0:
+            print(f"Here is ${change} in change")
+            profit += MENU[user_input]["cost"]
+            resources["water"] -= MENU[user_input]["ingredients"]["water"]
+            resources["milk"] -= MENU[user_input]["ingredients"]["milk"]
+            resources["coffee"] -= MENU[user_input]["ingredients"]["coffee"]
+            print(f"Here is your {user_input} Enjoy!")
+        else:
+            print("Sorry that's not enough money. Money refunded.")
 
