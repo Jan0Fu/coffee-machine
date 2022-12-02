@@ -80,9 +80,8 @@ while not loop_breaker:
         if change >= 0:
             print(f"Here is ${change} in change")
             profit += MENU[user_input]["cost"]
-            resources["water"] -= MENU[user_input]["ingredients"]["water"]
-            resources["milk"] -= MENU[user_input]["ingredients"]["milk"]
-            resources["coffee"] -= MENU[user_input]["ingredients"]["coffee"]
+            for item in MENU[user_input]["ingredients"]:
+                resources[item] -= MENU[user_input]["ingredients"][item]
             print(f"Here is your {user_input} ☕️ Enjoy!")
         else:
             print("Sorry that's not enough money. Money refunded.")
