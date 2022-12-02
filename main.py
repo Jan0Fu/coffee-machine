@@ -41,10 +41,15 @@ def report():
     print(f"Money: ${profit}")
 
 
-def check_res(drink):
-    return drink["ingredients"]["water"] <= resources["water"]\
-           and drink["ingredients"]["milk"] <= resources["milk"] \
-           and drink["ingredients"]["coffee"] <= resources["coffee"]
+def check_res(user_input):
+    if MENU[user_input]["ingredients"]["water"] > resources["water"]:
+        return "Sorry there is not enough water"
+    elif MENU[user_input]["ingredients"]["milk"] > resources["milk"]:
+        return "Sorry there is not enough milk"
+    elif MENU[user_input]["ingredients"]["coffee"] > resources["coffee"]:
+        return "Sorry there is not enough coffee"
+    else:
+        return
 
 
 def check_value():
@@ -59,15 +64,22 @@ loop_breaker = False
 
 while not loop_breaker:
     user_input = input("What would you like? (espresso/latte/capuccino): ")
+    if user_input == "off":
+        print("Switching off")
+        loop_breaker = True
+        continue
     if user_input == "report":
         report()
-    if not check_res(user_input):
-        print("Sorry, not enough resources")
+        continue
     else:
-        print("Please insert coins")
+        if check_res(user_input):
+            print("Please insert coins")
         if check_value() >= MENU[user_input]["cost"]:
             print(f"Here is {check_value() - MENU[user_input]['cost']}")
             profit += MENU[user_input]["cost"]
+            resources["water"] -= MENU[user_input]["ingredients"]["water"]
+            resources["milk"] -= MENU[user_input]["ingredients"]["milk"]
+            resources["coffee"] -= MENU[user_input]["ingredients"]["coffee"]
             print(f"Here is your {user_input} Enjoy!")
         else:
             print("Sorry that's not enough money. Money refunded.")
